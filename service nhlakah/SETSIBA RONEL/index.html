@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333; /* Dark text color for readability */
+            background-color: #ffe6f2; /* Light pink background */
+        }
+        header {
+            background-color: #ff4d94; /* Pink header */
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            margin: 10px 0;
+        }
+        nav a, nav button {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        section {
+            padding: 20px;
+            margin: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Light white background */
+            border-radius: 8px;
+        }
+        #home {
+            background-image: url('your-image-url.jpeg'); /* Placeholder for uploaded image */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 8px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%; /* Full width */
+        }
+        input, textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%; /* Make input fields full width */
+            border: 1px solid #ff4d94; /* Pink border */
+            border-radius: 4px;
+        }
+        textarea {
+            resize: vertical; /* Allow vertical resizing */
+        }
+        #upload-image {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>My Personal Website</h1>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#personal-info">Personal Info</a>
+        <a href="#education">Education</a>
+        <a href="#work-experience">Work Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <button id="download-pdf">Download PDF</button>
+    </nav>
+</header>
+
+<section id="home">
+    <h2>Welcome to My Website</h2>
+</section>
+<h2>MY NAME IS SETSIBA RONEL DOING MY FIRST YEAR AT THE UNIVERSITY OF LIMPOPO AND THIS IS MY CV WEBSITE</h2>
+<section>
+    <h2>Upload Your Picture</h2>
+    <input type="file" id="upload-image" accept="image/*">
+</section>
+
+<section id="personal-info">
+    <h2>Personal Information</h2>
+    <p>Name: <input type="text" id="name" placeholder="John Doe"></p>
+    <p>Contact: <input type="email" id="contact" placeholder="john.doe@example.com"></p>
+    <p>Short Bio: <textarea id="bio" placeholder="A brief introduction about yourself."></textarea></p>
+</section>
+
+<section id="education">
+    <h2>Education</h2>
+    <textarea id="education-details" placeholder="Details of your educational background."></textarea>
+</section>
+
+<section id="work-experience">
+    <h2>Work Experience</h2>
+    <textarea id="work-experience-details" placeholder="Information on your professional experience."></textarea>
+</section>
+
+<section id="skills">
+    <h2>Skills</h2>
+    <textarea id="skills-list" placeholder="List your skills, separated by commas."></textarea>
+</section>
+
+<section id="projects">
+    <h2>Projects</h2>
+    <textarea id="projects-details" placeholder="Descriptions of significant projects you have worked on."></textarea>
+</section>
+
+<section id="contact">
+    <h2>Contact Form</h2>
+    <form id="contact-form">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+
+<script>
+    // Update background image when a new image is uploaded
+    document.getElementById('upload-image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('home').style.backgroundImage = `url(${e.target.result})`;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Save data to localStorage
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = this.name.value;
+        const email = this.email.value;
+        const message = this.message.value;
+
+        localStorage.setItem('name', name);
+        localStorage.setItem('email', email);
+        localStorage.setItem('message', message);
+        
+        alert('Information saved to localStorage!');
+    });
+
+    // Download PDF
+    document.getElementById('download-pdf').addEventListener('click', function() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.text("My Personal Website", 20, 20);
+        doc.text(`Name: ${document.getElementById('name').value}`, 20, 30);
+        doc.text(`Contact: ${document.getElementById('contact').value}`, 20, 40);
+        doc.text(`Bio: ${document.getElementById('bio').value}`, 20, 50);
+        doc.text(`Education: ${document.getElementById('education-details').value}`, 20, 60);
+        doc.text(`Work Experience: ${document.getElementById('work-experience-details').value}`, 20, 70);
+        doc.text(`Skills: ${document.getElementById('skills-list').value}`, 20, 80);
+        doc.text(`Projects: ${document.getElementById('projects-details').value}`, 20, 90);
+
+        doc.save('personal_info.pdf');
+    });
+</script>
+
+</body>
+</html>
