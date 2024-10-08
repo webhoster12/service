@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My CV - Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn {
+            background-color: rgba(60, 60, 60, 0.5);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 5px;
+            transition: background-color 0.3s;
+            flex: 1 1 30%;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: brown;
+        }
+        .add-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Projects</h1>
+        <div id="projects-container">
+            <div class="project">
+                <input type="text" id="projectName" placeholder="Project Name" />
+                <input type="text" id="projectDescription" placeholder="Description" />
+            </div>
+        </div>
+        <button class="btn add-btn" onclick="addProject()">Add Another Project</button>
+        
+        <div class="btn-container">
+            <a href="page4.html" class="btn">Previous: Skills</a>
+            <a href="index.html" class="btn">Home</a>
+            <a href="page6.html" class="btn">Next: Contact</a>
+            <button class="btn" onclick="downloadCV()">Download CV as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Load stored data when the page is loaded
+        window.onload = function() {
+            document.getElementById('projectName').value = localStorage.getItem('projectName') || '';
+            document.getElementById('projectDescription').value = localStorage.getItem('projectDescription') || '';
+        };
+
+        // Store data when input fields change
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                localStorage.setItem(this.id, this.value);
+            });
+        });
+
+        // Function to add new project input fields
+        function addProject() {
+            const projectsContainer = document.getElementById('projects-container');
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('project');
+
+            projectDiv.innerHTML = `
+                <input type="text" id="projectName" placeholder="Project Name" />
+                <input type="text" id="projectDescription" placeholder="Description" />
+            `;
+
+            projectsContainer.appendChild(projectDiv);
+        }
+
+        // Function to generate and download the CV as PDF
+        function downloadCV() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Retrieve data from localStorage
+            const name = localStorage.getItem('name') || '';
+            const email = localStorage.getItem('email') || '';
+            const phone = localStorage.getItem('phone') || '';
+            const address = localStorage.getItem('address') || '';
+            const degree = localStorage.getItem('degree') || '';
+            const institution = localStorage.getItem('institution') || '';
+            const year = localStorage.getItem('year') || '';
+            const jobTitle = localStorage.getItem('jobTitle') || '';
+            const company = localStorage.getItem('company') || '';
+            const duration = localStorage.getItem('duration') || '';
+            const skill = localStorage.getItem('skill') || '';
+            const projectNames = document.querySelectorAll('input[id="projectName"]');
+            const projectDescriptions = document.querySelectorAll('input[id="projectDescription"]');
+            let projectText = '';
+            
+            projectNames.forEach((input, index) => {
+                projectText += `Project Name: ${input.value}\nDescription: ${projectDescriptions[index]?.value || ''}\n\n`;
+            });
+
+            // Add content to the PDF
+            doc.setFontSize(18);
+            doc.text('Curriculum Vitae', 105, 20, { align: 'center' });
+
+            doc.setFontSize(14);
+            doc.text('Personal Information:', 20, 40);
+            doc.setFontSize(12);
+            doc.text(`Name: ${name}`, 20, 50);
+            doc.text(`Email: ${email}`, 20, 60);
+            doc.text(`Phone: ${phone}`, 20, 70);
+            doc.text(`Address: ${address}`, 20, 80);
+
+            doc.setFontSize(14);
+            doc.text('Education:', 20, 100);
+            doc.setFontSize(12);
+            doc.text(`Degree: ${degree}`, 20, 110);
+            doc.text(`Institution: ${institution}`, 20, 120);
+            doc.text(`Year of Graduation: ${year}`, 20, 130);
+
+            doc.setFontSize(14);
+            doc.text('Work Experience:', 20, 150);
+            doc.setFontSize(12);
+            doc.text(`Job Title: ${jobTitle}`, 20, 160);
+            doc.text(`Company: ${company}`, 20, 170);
+            doc.text(`Duration: ${duration}`, 20, 180);
+
+            doc.setFontSize(14);
+            doc.text('Skills:', 20, 200);
+            doc.setFontSize(12);
+            doc.text(`Skill: ${skill}`, 20, 210);
+
+            doc.setFontSize(14);
+            doc.text('Projects:', 20, 230);
+            doc.setFontSize(12);
+            doc.text(projectText, 20, 240);
+
+            // Save the PDF
+            doc.save('CV.pdf');
+        }
+    </script>
+
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>

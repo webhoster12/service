@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My CV - Personal Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .box {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 50px auto;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            display: inline-block;
+            background-color: rgba(60, 60, 60, 0.5);
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: brown;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>Personal Information</h1>
+        <input type="text" id="name" placeholder="Name" />
+        <input type="text" id="email" placeholder="Email" />
+        <input type="text" id="phone" placeholder="Phone" />
+        <input type="text" id="address" placeholder="Address" />
+        
+        <div style="margin-top: 20px;">
+            <a href="index.html" class="btn">Home</a>
+            <a href="page2.html" class="btn">Next: Education</a>
+        </div>
+    </div>
+
+    <script>
+        // Load stored data when the page is loaded
+        window.onload = function() {
+            document.getElementById('name').value = localStorage.getItem('name') || '';
+            document.getElementById('email').value = localStorage.getItem('email') || '';
+            document.getElementById('phone').value = localStorage.getItem('phone') || '';
+            document.getElementById('address').value = localStorage.getItem('address') || '';
+        };
+
+        // Store data when input fields change
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', function() {
+                localStorage.setItem(this.id, this.value);
+            });
+        });
+    </script>
+</body>
+</html>
